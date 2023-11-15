@@ -1,17 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://shpovefol4ej"]
+[gd_scene load_steps=3 format=3 uid="uid://b2c8obgnh4sry"]
 
 [ext_resource type="Script" path="res://player_movement.gd" id="1_bklaf"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_o7l7s"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2dogd"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_supdo"]
-
-[node name="player" type="RigidBody3D"]
-lock_rotation = true
+[node name="Player" type="CharacterBody3D"]
 script = ExtResource("1_bklaf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CapsuleShape3D_o7l7s")
+shape = SubResource("CapsuleShape3D_2dogd")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("CapsuleMesh_supdo")
+[node name="POV" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="POV"]
