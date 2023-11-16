@@ -11,6 +11,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var is_jumping = false
 var jump_height = 5.0
 
+# abilities
+var blue = preload("res://blue.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,6 +22,10 @@ func _process(delta):
 	# Reset jump status when the character lands
 	if is_on_floor():
 		is_jumping = false
+		
+	if Input.is_action_pressed("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
 
 # for camera movement
 func _input(event):
@@ -52,5 +58,31 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, current_speed)
 		velocity.z = move_toward(velocity.z, 0, current_speed)
+		
+		
+	# to fire blue
+	if Input.is_action_just_pressed("technique_blue"):
+		technique_blue()
 
 	move_and_slide()
+	
+func technique_blue():
+	if blue:  # Check if the blue scene is loaded
+		var blue_instance = blue.instantiate()
+		
+		blue_instance.position = position + transform.basis.z * 2
+
+		# Set the rotation of the blue_instance based on the camera's transform
+		var camera_transform = pov.global_transform  # Assuming the camera is a child of the player
+		var camera_forward = -camera_transform.basis.z.normalized()
+		var target_rotation = Basis().looking_at(camera_forward, Vector3(0, 1, 0))
+
+		blue_instance.transform.basis = target_rotation
+
+		get_parent().add_child(blue_instance)
+	else:
+		print("Error: Blue scene not loaded")
+
+
+
+

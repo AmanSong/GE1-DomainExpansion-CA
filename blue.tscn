@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8kmueaafcl4m"]
+
+[ext_resource type="Script" path="res://blue_script.gd" id="1_odeyt"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6nx2y"]
+albedo_color = Color(0, 0, 1, 1)
+emission_enabled = true
+emission = Color(0, 0, 1, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_dxf4i"]
+
+[node name="blue" type="Node3D"]
+script = ExtResource("1_odeyt")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_6nx2y")
+mesh = SubResource("SphereMesh_dxf4i")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -1)
