@@ -1,10 +1,10 @@
 extends Node3D
 
-const SPEED = 40.0
+const SPEED = 100.0
 
-@onready var blue = $MeshInstance3D
-@onready var rayCast3d = $RayCast3D
-@onready var particles = $CPUParticles3D2
+@onready var purple = $MeshInstance3D
+@onready var ray_cast_3d = $RayCast3D
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -13,12 +13,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	position += transform.basis * Vector3(0, 0, -SPEED) * delta
-	if rayCast3d.is_colliding():
-		blue.visible = false
-		particles.emitting = true
-		await get_tree().create_timer(10.0).timeout
-		queue_free()
-
-func _on_timer_timeout():
+	await get_tree().create_timer(10.0).timeout
 	queue_free()
 
+func _on_timer_timeout():
+	queue_free() # Replace with function body.

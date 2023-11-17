@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=3 uid="uid://dcdy1xmq0qlox"]
+
+[ext_resource type="Script" path="res://purple.gd" id="1_i8xal"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tq2nh"]
+albedo_color = Color(0.427451, 0, 0.427451, 1)
+roughness = 0.18
+emission_enabled = true
+emission = Color(0.333333, 0, 0.513726, 1)
+emission_energy_multiplier = 1.83
+
+[sub_resource type="SphereMesh" id="SphereMesh_0wgq7"]
+material = SubResource("StandardMaterial3D_tq2nh")
+radius = 1.0
+height = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gubcq"]
+transparency = 1
+albedo_color = Color(0.870588, 0.0784314, 0.972549, 1)
+roughness = 0.0
+emission_enabled = true
+emission = Color(1, 0.160784, 0.996078, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_583h0"]
+material = SubResource("StandardMaterial3D_gubcq")
+size = 0.915
+section_length = 0.02
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d1mgn"]
+transparency = 1
+albedo_color = Color(1, 0, 1, 1)
+roughness = 0.0
+emission_enabled = true
+emission = Color(0.721569, 0, 0.721569, 1)
+emission_energy_multiplier = 5.0
+
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_3og4w"]
+material = SubResource("StandardMaterial3D_d1mgn")
+
+[node name="purple" type="Node3D"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+script = ExtResource("1_i8xal")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 0, 0)
+mesh = SubResource("SphereMesh_0wgq7")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -1)
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+amount = 250
+speed_scale = 5.0
+randomness = 1.0
+local_coords = true
+mesh = SubResource("RibbonTrailMesh_583h0")
+emission_shape = 2
+emission_sphere_radius = 3.0
+particle_flag_align_y = true
+gravity = Vector3(0, 0, 0)
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+tangential_accel_min = -100.0
+tangential_accel_max = -100.0
+
+[node name="CPUParticles3D2" type="CPUParticles3D" parent="."]
+amount = 250
+speed_scale = 5.0
+randomness = 1.0
+local_coords = true
+mesh = SubResource("RibbonTrailMesh_3og4w")
+emission_shape = 2
+emission_sphere_radius = 5.0
+particle_flag_rotate_y = true
+gravity = Vector3(0, 0, 0)
+linear_accel_min = 1.0
+linear_accel_max = 1.0
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+tangential_accel_min = -100.0
+tangential_accel_max = 100.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

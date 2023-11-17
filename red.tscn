@@ -1,11 +1,13 @@
-[gd_scene load_steps=6 format=3 uid="uid://b7urbr6q0wc4u"]
+[gd_scene load_steps=8 format=3 uid="uid://b7urbr6q0wc4u"]
 
 [ext_resource type="Script" path="res://red_script.gd" id="1_qxso2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_enhbi"]
 albedo_color = Color(1, 0, 0, 0)
+roughness = 0.0
 emission_enabled = true
 emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 16.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_wx7cx"]
 material = SubResource("StandardMaterial3D_enhbi")
@@ -15,9 +17,19 @@ transparency = 1
 albedo_color = Color(1, 0, 0, 1)
 emission_enabled = true
 emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 16.0
 
 [sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_slhk7"]
 material = SubResource("StandardMaterial3D_5rqyw")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_76pof"]
+albedo_color = Color(0.623529, 0.0941176, 0, 1)
+emission_enabled = true
+emission = Color(0.792157, 0, 0.105882, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_t77df"]
+material = SubResource("StandardMaterial3D_76pof")
 
 [node name="red" type="Node3D"]
 script = ExtResource("1_qxso2")
@@ -41,3 +53,29 @@ radial_accel_min = 1.0
 radial_accel_max = 12.0
 tangential_accel_min = 100.0
 tangential_accel_max = 100.0
+
+[node name="CPUParticles3D2" type="CPUParticles3D" parent="."]
+emitting = false
+amount = 128
+lifetime = 5.0
+one_shot = true
+speed_scale = 5.0
+explosiveness = 1.0
+randomness = 1.0
+mesh = SubResource("SphereMesh_t77df")
+emission_shape = 2
+emission_sphere_radius = 1.0
+direction = Vector3(1, 1, 0)
+gravity = Vector3(0, 1, 0)
+linear_accel_min = -10.5
+linear_accel_max = 36.1
+radial_accel_min = 20.0
+radial_accel_max = 20.0
+tangential_accel_min = -24.35
+tangential_accel_max = 7.15
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

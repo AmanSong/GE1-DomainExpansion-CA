@@ -14,13 +14,13 @@ var jump_height = 5.0
 # abilities
 var blue = preload("res://blue.tscn")
 var red = preload("res://red.tscn")
+var purple = preload("res://purple.tscn")
 
 @export var technique_blue_cooldown = 1.0 
 @export var technique_red_cooldown = 1.0
 # Cooldown timers
 var blue_cooldown_timer = 0.0
 var red_cooldown_timer = 0.0
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -81,6 +81,10 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("technique_red") and red_cooldown_timer == 0.0:
 		technique_red()
 		red_cooldown_timer = technique_red_cooldown
+	
+	# to fire purple
+	if Input.is_action_just_pressed("technique_purple"):
+		technique_purple()
 
 	move_and_slide()
 	
@@ -119,3 +123,21 @@ func technique_red():
 		get_parent().add_child(red_instance)
 	else:
 		print("Error: Red scene not loaded")
+
+func technique_purple():
+	if purple:  # Check if the red scene is loaded
+		var purple_instance = purple.instantiate()
+		
+		# move red in front and to the right more
+		purple_instance.position = position + transform.basis.z * -2
+
+		# Set the rotation of the red_instance based on the camera's transform
+		var camera_transform = pov.global_transform 
+		var camera_forward = -camera_transform.basis.z.normalized()
+		var target_rotation = Basis().looking_at(camera_forward, Vector3(0, 1, 0))
+
+		purple_instance.transform.basis = target_rotation
+
+		get_parent().add_child(purple_instance)
+	else:
+		print("Error: Purple scene not loaded")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c8kmueaafcl4m"]
+[gd_scene load_steps=8 format=3 uid="uid://c8kmueaafcl4m"]
 
 [ext_resource type="Script" path="res://blue_script.gd" id="1_odeyt"]
 
@@ -17,9 +17,19 @@ transparency = 1
 albedo_color = Color(0, 0, 0.188235, 1)
 emission_enabled = true
 emission = Color(0.00392157, 0.227451, 1, 1)
+emission_energy_multiplier = 16.0
 
 [sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_n0quy"]
 material = SubResource("StandardMaterial3D_vdj5d")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4kqvh"]
+albedo_color = Color(0, 0.415686, 0.917647, 1)
+emission_enabled = true
+emission = Color(0, 0, 0.745098, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_it2rg"]
+material = SubResource("StandardMaterial3D_4kqvh")
 
 [node name="blue" type="Node3D"]
 script = ExtResource("1_odeyt")
@@ -48,3 +58,22 @@ radial_accel_min = -100.0
 radial_accel_max = -100.0
 tangential_accel_min = 200.0
 tangential_accel_max = 200.0
+
+[node name="CPUParticles3D2" type="CPUParticles3D" parent="."]
+emitting = false
+amount = 300
+lifetime = 5.0
+one_shot = true
+speed_scale = 5.0
+mesh = SubResource("SphereMesh_it2rg")
+emission_shape = 2
+emission_sphere_radius = 25.0
+gravity = Vector3(0, -1, 0)
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
