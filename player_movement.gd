@@ -8,6 +8,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var mouse_sensitivity = 0.25
 @onready var pov = $POV
 
+
 var is_jumping = false
 var jump_height = 5.0
 
@@ -124,20 +125,35 @@ func technique_red():
 	else:
 		print("Error: Red scene not loaded")
 
+
 func technique_purple():
 	if purple:  # Check if the red scene is loaded
 		var purple_instance = purple.instantiate()
+		var red_instance = red.instantiate()
+		var blue_instance = blue.instantiate()
 		
-		# move red in front and to the right more
-		purple_instance.position = position + transform.basis.z * -2
+		# move purple in front and to the right more
+		purple_instance.global_transform.origin = pov.global_transform.origin + pov.global_transform.basis.z * -2
 
-		# Set the rotation of the red_instance based on the camera's transform
+		# Set the rotation of the purple_instance based on the camera's transform
 		var camera_transform = pov.global_transform 
 		var camera_forward = -camera_transform.basis.z.normalized()
 		var target_rotation = Basis().looking_at(camera_forward, Vector3(0, 1, 0))
 
 		purple_instance.transform.basis = target_rotation
-
+		
+		red_instance.stop_movement()
+		blue_instance.stop_movement()
+		red_instance.position = position + transform.basis.z * -2 + transform.basis.x * 2
+		red_instance.transform.basis = target_rotation
+		blue_instance.position = position + transform.basis.z * -2 + transform.basis.x * -2
+		blue_instance.transform.basis = target_rotation
+		
 		get_parent().add_child(purple_instance)
+		get_parent().add_child(red_instance)
+		get_parent().add_child(blue_instance)
+		
 	else:
 		print("Error: Purple scene not loaded")
+		
+
