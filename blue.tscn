@@ -3,23 +3,23 @@
 [ext_resource type="Script" path="res://blue_script.gd" id="1_odeyt"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6nx2y"]
+transparency = 1
 albedo_color = Color(0, 0, 1, 1)
+roughness = 0.0
 emission_enabled = true
 emission = Color(0, 0, 1, 1)
 emission_energy_multiplier = 16.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_dxf4i"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_870g7"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vdj5d"]
 transparency = 1
-blend_mode = 1
-cull_mode = 2
-albedo_color = Color(0, 0, 1, 1)
-emission = Color(0.172549, 0, 0.67451, 1)
+albedo_color = Color(0, 0, 0.188235, 1)
+emission_enabled = true
+emission = Color(0.00392157, 0.227451, 1, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_7po82"]
-material = SubResource("StandardMaterial3D_870g7")
-size = Vector3(0.25, 0.5, 0.5)
+[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_n0quy"]
+material = SubResource("StandardMaterial3D_vdj5d")
 
 [node name="blue" type="Node3D"]
 script = ExtResource("1_odeyt")
@@ -32,15 +32,19 @@ mesh = SubResource("SphereMesh_dxf4i")
 target_position = Vector3(0, 0, -1)
 
 [node name="CPUParticles3D" type="CPUParticles3D" parent="."]
-amount = 32
-mesh = SubResource("BoxMesh_7po82")
-emission_shape = 2
+amount = 64
+speed_scale = 2.0
+explosiveness = 0.5
+randomness = 1.0
+local_coords = true
+mesh = SubResource("RibbonTrailMesh_n0quy")
+emission_shape = 1
 emission_sphere_radius = 1.0
 particle_flag_align_y = true
-particle_flag_rotate_y = true
 gravity = Vector3(0, 0, 0)
-linear_accel_min = -100.0
-linear_accel_max = 67.05
-radial_accel_min = -200.0
-tangential_accel_min = 173.22
-tangential_accel_max = 173.22
+initial_velocity_min = 10.0
+initial_velocity_max = 10.0
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+tangential_accel_min = 200.0
+tangential_accel_max = 200.0

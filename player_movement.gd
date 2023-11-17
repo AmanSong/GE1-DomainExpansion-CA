@@ -13,6 +13,14 @@ var jump_height = 5.0
 
 # abilities
 var blue = preload("res://blue.tscn")
+var red = preload("res://red.tscn")
+
+@export var technique_blue_cooldown = 1.0 
+@export var technique_red_cooldown = 1.0
+# Cooldown timers
+var blue_cooldown_timer = 0.0
+var red_cooldown_timer = 0.0
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -25,6 +33,10 @@ func _process(delta):
 		
 	if Input.is_action_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		
+	# Update cooldown timers
+	blue_cooldown_timer = max(0, blue_cooldown_timer - delta)
+	red_cooldown_timer = max(0, red_cooldown_timer - delta)
 
 
 # for camera movement
@@ -61,8 +73,14 @@ func _physics_process(delta):
 		
 		
 	# to fire blue
-	if Input.is_action_just_pressed("technique_blue"):
+	if Input.is_action_just_pressed("technique_blue") and blue_cooldown_timer == 0.0:
 		technique_blue()
+		blue_cooldown_timer = technique_blue_cooldown
+
+	# to fire red
+	if Input.is_action_just_pressed("technique_red") and red_cooldown_timer == 0.0:
+		technique_red()
+		red_cooldown_timer = technique_red_cooldown
 
 	move_and_slide()
 	
@@ -70,7 +88,8 @@ func technique_blue():
 	if blue:  # Check if the blue scene is loaded
 		var blue_instance = blue.instantiate()
 		
-		blue_instance.position = position + transform.basis.z * 2
+		# move blue to the front and more to the left
+		blue_instance.position = position + transform.basis.z * -2 + transform.basis.x * -2
 
 		# Set the rotation of the blue_instance based on the camera's transform
 		var camera_transform = pov.global_transform 
@@ -83,6 +102,20 @@ func technique_blue():
 	else:
 		print("Error: Blue scene not loaded")
 
+func technique_red():
+	if red:  # Check if the red scene is loaded
+		var red_instance = red.instantiate()
+		
+		# move red in front and to the right more
+		red_instance.position = position + transform.basis.z * -2 + transform.basis.x * 2
 
+		# Set the rotation of the red_instance based on the camera's transform
+		var camera_transform = pov.global_transform 
+		var camera_forward = -camera_transform.basis.z.normalized()
+		var target_rotation = Basis().looking_at(camera_forward, Vector3(0, 1, 0))
 
+		red_instance.transform.basis = target_rotation
 
+		get_parent().add_child(red_instance)
+	else:
+		print("Error: Red scene not loaded")
