@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://c8kmueaafcl4m"]
+[gd_scene load_steps=6 format=3 uid="uid://c8kmueaafcl4m"]
 
 [ext_resource type="Script" path="res://blue_script.gd" id="1_odeyt"]
 
@@ -10,6 +10,17 @@ emission_energy_multiplier = 16.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_dxf4i"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_870g7"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+albedo_color = Color(0, 0, 1, 1)
+emission = Color(0.172549, 0, 0.67451, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7po82"]
+material = SubResource("StandardMaterial3D_870g7")
+size = Vector3(0.25, 0.5, 0.5)
+
 [node name="blue" type="Node3D"]
 script = ExtResource("1_odeyt")
 
@@ -19,3 +30,17 @@ mesh = SubResource("SphereMesh_dxf4i")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -1)
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+amount = 32
+mesh = SubResource("BoxMesh_7po82")
+emission_shape = 2
+emission_sphere_radius = 1.0
+particle_flag_align_y = true
+particle_flag_rotate_y = true
+gravity = Vector3(0, 0, 0)
+linear_accel_min = -100.0
+linear_accel_max = 67.05
+radial_accel_min = -200.0
+tangential_accel_min = 173.22
+tangential_accel_max = 173.22

@@ -73,7 +73,7 @@ func technique_blue():
 		blue_instance.position = position + transform.basis.z * 2
 
 		# Set the rotation of the blue_instance based on the camera's transform
-		var camera_transform = pov.global_transform  # Assuming the camera is a child of the player
+		var camera_transform = pov.global_transform 
 		var camera_forward = -camera_transform.basis.z.normalized()
 		var target_rotation = Basis().looking_at(camera_forward, Vector3(0, 1, 0))
 
