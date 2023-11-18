@@ -7,6 +7,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var sprint_speed = 10.0
 @export var mouse_sensitivity = 0.25
 @onready var pov = $POV
+@onready var player = $"."
 
 
 var is_jumping = false
@@ -38,7 +39,6 @@ func _process(delta):
 	# Update cooldown timers
 	blue_cooldown_timer = max(0, blue_cooldown_timer - delta)
 	red_cooldown_timer = max(0, red_cooldown_timer - delta)
-
 
 # for camera movement
 func _input(event):
@@ -125,7 +125,6 @@ func technique_red():
 	else:
 		print("Error: Red scene not loaded")
 
-
 func technique_purple():
 	if purple:  # Check if the red scene is loaded
 		var purple_instance = purple.instantiate()
@@ -139,21 +138,37 @@ func technique_purple():
 		var camera_transform = pov.global_transform 
 		var camera_forward = -camera_transform.basis.z.normalized()
 		var target_rotation = Basis().looking_at(camera_forward, Vector3(0, 1, 0))
-
+		
+		# purple facing from camera
 		purple_instance.transform.basis = target_rotation
 		
+		# stop them from moving
 		red_instance.stop_movement()
 		blue_instance.stop_movement()
+		
+		# set their starting positions
 		red_instance.position = position + transform.basis.z * -2 + transform.basis.x * 2
 		red_instance.transform.basis = target_rotation
 		blue_instance.position = position + transform.basis.z * -2 + transform.basis.x * -2
 		blue_instance.transform.basis = target_rotation
 		
-		get_parent().add_child(purple_instance)
+		
 		get_parent().add_child(red_instance)
 		get_parent().add_child(blue_instance)
+		
+		var mid = pov.global_transform.origin + pov.global_transform.basis.z * -2
+		
+		var tween_red = get_tree().create_tween()
+		var tween_blue = get_tree().create_tween()
+		
+		tween_red.tween_property(red_instance, "position", mid, 5.0)
+		tween_blue.tween_property(blue_instance, "position", mid, 5.0)
+		
+		await get_tree().create_timer(5).timeout
+		red_instance.queue_free()
+		blue_instance.queue_free()
+		get_parent().add_child(purple_instance)
 		
 	else:
 		print("Error: Purple scene not loaded")
 		
-
