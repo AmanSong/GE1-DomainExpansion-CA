@@ -1,0 +1,77 @@
+[gd_scene format=3 uid="uid://dcfpv8wmsnae7"]
+
+[node name="UI" type="Node2D"]
+
+[node name="Hotbar" type="Panel" parent="."]
+offset_left = 355.0
+offset_top = 599.0
+offset_right = 821.0
+offset_bottom = 643.0
+size_flags_vertical = 8
+
+[node name="BLUE" type="Panel" parent="Hotbar"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 104.0
+offset_bottom = 20.0
+grow_vertical = 2
+
+[node name="cooldown1" type="Label" parent="Hotbar/BLUE"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -13.0
+offset_right = 54.0
+offset_bottom = 13.0
+grow_vertical = 2
+
+[node name="RED" type="Panel" parent="Hotbar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -20.0
+offset_right = 52.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="cooldown2" type="Label" parent="Hotbar/RED"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -13.0
+offset_right = 54.0
+offset_bottom = 13.0
+grow_vertical = 2
+
+[node name="PURPLE" type="Panel" parent="Hotbar"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -89.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="cooldown3" type="Label" parent="Hotbar/PURPLE"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -13.0
+offset_right = 60.0
+offset_bottom = 13.0
+grow_vertical = 2

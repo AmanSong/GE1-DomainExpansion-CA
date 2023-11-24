@@ -78,4 +78,6 @@ tangential_accel_max = 7.15
 wait_time = 10.0
 autostart = true
 
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
