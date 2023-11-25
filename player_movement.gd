@@ -10,6 +10,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var player = $"."
 @onready var ui = $CanvasLayer/UI
 
+@onready var audio_player = $AudioStreamPlayer3D 
+
 var is_jumping = false
 var jump_height = 5.0
 
@@ -104,6 +106,10 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("technique_purple") and purple_cooldown_timer == 0:
 		technique_purple()
 		purple_cooldown_timer = technique_purple_cooldown
+		
+	# for domain expansion
+	if Input.is_action_just_pressed("domain_expansion"):
+		domain_expansion()
 
 	move_and_slide()
 	
@@ -174,12 +180,19 @@ func technique_purple():
 		get_parent().add_child(blue_instance)
 		
 		var mid = pov.global_transform.origin + pov.global_transform.basis.z * -2
-			
+		
 		# using tween to make red and blue merge
 		var tween_red = get_tree().create_tween()
 		var tween_blue = get_tree().create_tween()
 		tween_red.tween_property(red_instance, "position", mid, 3.0)
 		tween_blue.tween_property(blue_instance, "position", mid, 3.0)
+		
+		var purple_sound: AudioStream = preload("res://Sounds/purple_sfx.mp3")
+		var purple_theme: AudioStream = preload("res://Sounds/purple_theme.mp3")
+		
+		if not audio_player.playing:
+			audio_player.stream = purple_sound
+			audio_player.play()
 		
 		# just to remove red and blue after 5 seconds
 		await get_tree().create_timer(3).timeout
@@ -192,3 +205,7 @@ func technique_purple():
 	else:
 		print("Error: Purple scene not loaded")
 		
+		
+func domain_expansion():
+	pass
+

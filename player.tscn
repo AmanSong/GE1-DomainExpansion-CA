@@ -18,3 +18,9 @@ shape = SubResource("CapsuleShape3D_2dogd")
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="UI" parent="CanvasLayer" instance=ExtResource("2_0486t")]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+attenuation_model = 3
+
+[node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="."]
+attenuation_model = 3
