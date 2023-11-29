@@ -19,6 +19,7 @@ var jump_height = 5.0
 var blue = preload("res://blue.tscn")
 var red = preload("res://red.tscn")
 var purple = preload("res://purple.tscn")
+var domain = preload("res://infinite_void.tscn")
 
 @export var technique_blue_cooldown = 5.0 
 @export var technique_red_cooldown = 5.0
@@ -207,5 +208,15 @@ func technique_purple():
 		
 		
 func domain_expansion():
-	pass
+	# instantiate domain
+	var domain_instance = domain.instantiate()
+	
+	# spawn it where player is and move upwards
+	domain_instance.global_transform.origin = pov.global_transform.origin+ pov.global_transform.basis.y * 100
+	
+	# move player up as well
+	player.global_transform.origin += pov.global_transform.basis.y * 100
+	
+	get_parent().add_child(domain_instance)
+	
 

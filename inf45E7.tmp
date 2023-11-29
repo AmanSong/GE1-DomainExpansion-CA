@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cwhwl065yn8s6"]
+[gd_scene load_steps=6 format=3 uid="uid://cwhwl065yn8s6"]
 
 [sub_resource type="GDScript" id="GDScript_l2t63"]
 script/source = "extends Node3D
@@ -6,35 +6,30 @@ script/source = "extends Node3D
 # The cube scene to instantiate
 var cube_scene = preload(\"res://barrier.tscn\")
 
-# Number of cubes in each dimension
-var num_cubes_longitude = 100
-var num_cubes_latitude = 50
+# Number of cubes in the sphere
+var num_cubes = 100
 
 # Radius of the sphere
-var sphere_radius = 75
+var sphere_radius = 5
 
 func _ready():
-	for lat in range(num_cubes_latitude):
-		await get_tree().create_timer(0.05).timeout
-		for lon in range(num_cubes_longitude):
-			
-			# Calculate the spherical coordinates for each cube
-			var theta = (lon * (2 * PI) / num_cubes_longitude)
-			var phi = lat * PI / (num_cubes_latitude - 1)
-			
-			# Convert spherical coordinates to Cartesian coordinates
-			var x = sphere_radius * sin(phi) * cos(theta)
-			var y = sphere_radius * cos(phi)
-			var z = sphere_radius * sin(phi) * sin(theta)
+	for i in range(num_cubes):
+		# Calculate the spherical coordinates for each cube
+		var theta = randf_range(0, 2 * PI)
+		var phi = randf_range(0, PI)
+		await get_tree().create_timer(0.1).timeout
 
-			# Instantiate the cube scene
-			var cube_instance = cube_scene.instantiate()
-			
-			# Set the cube's position relative to the player
-			cube_instance.transform.origin = Vector3(x, z, y)
-			# Add the cube to the scene
-			add_child(cube_instance)
+		# Convert spherical coordinates to Cartesian coordinates
+		var x = sphere_radius * sin(phi) * cos(theta)
+		var y = sphere_radius * cos(phi)
+		var z = sphere_radius * sin(phi) * sin(theta)
 
+		# Instantiate the cube scene
+		var cube_instance = cube_scene.instantiate()
+		# Set the cube's position relative to the player
+		cube_instance.transform.origin = Vector3(x, y, z)
+		# Add the cube to the scene
+		add_child(cube_instance)
 
 "
 
@@ -46,36 +41,36 @@ material = SubResource("StandardMaterial3D_583ce")
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_wbapj"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0eys1"]
-cull_mode = 2
-emission_enabled = true
-emission = Color(1, 1, 1, 1)
-
 [sub_resource type="SphereMesh" id="SphereMesh_scipp"]
-material = SubResource("StandardMaterial3D_0eys1")
 
 [node name="InfiniteVoid" type="Node3D"]
 script = SubResource("GDScript_l2t63")
 
 [node name="BarrierFloor" type="MeshInstance3D" parent="."]
-transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 0, -1, 0)
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, 0, -1, 0)
+visible = false
 transparency = 1.0
 mesh = SubResource("PlaneMesh_61sg0")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="BarrierFloor"]
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BarrierFloor/StaticBody3D"]
+visible = false
 shape = SubResource("ConcavePolygonShape3D_wbapj")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
+visible = false
 operation = 2
 
 [node name="sphere1" type="MeshInstance3D" parent="CSGCombiner3D"]
-transform = Transform3D(150, 0, 0, 0, 150, 0, 0, 0, 150, 0, 0, 0)
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 0, 0, 0)
+visible = false
 cast_shadow = 0
 mesh = SubResource("SphereMesh_scipp")
 skeleton = NodePath("../..")
 
 [node name="sphere2" type="MeshInstance3D" parent="CSGCombiner3D"]
 transform = Transform3D(99.9, 0, 0, 0, 99.9, 0, 0, 0, 99.9, 0, 0, 0)
+visible = false
 skeleton = NodePath("../..")

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://nt4eh7qjtbpv"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o15rf"]
+albedo_color = Color(0, 0, 0, 1)
+disable_receive_shadows = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_v81h8"]
+material = SubResource("StandardMaterial3D_o15rf")
+
+[node name="Barrier" type="Node3D"]
+
+[node name="Cube" type="MeshInstance3D" parent="."]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
+mesh = SubResource("BoxMesh_v81h8")
