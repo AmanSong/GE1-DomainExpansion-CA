@@ -15,7 +15,7 @@ var sphere_radius = 75
 
 func _ready():
 	for lat in range(num_cubes_latitude):
-		await get_tree().create_timer(0.05).timeout
+		await get_tree().create_timer(0.075).timeout
 		for lon in range(num_cubes_longitude):
 			
 			# Calculate the spherical coordinates for each cube
@@ -34,6 +34,8 @@ func _ready():
 			cube_instance.transform.origin = Vector3(x, z, y)
 			# Add the cube to the scene
 			add_child(cube_instance)
+	
+	
 
 
 "
