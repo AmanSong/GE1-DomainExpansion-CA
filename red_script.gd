@@ -4,6 +4,7 @@ const SPEED = 40.0
 
 @onready var red = $MeshInstance3D
 @onready var red_rayCast3d = $RayCast3D
+@onready var red_particles2 = $CPUParticles3D
 @onready var red_particles = $CPUParticles3D2
 
 # Load sound
@@ -27,6 +28,7 @@ func _process(delta):
 		position += transform.basis * Vector3(0, 0, -SPEED) * delta
 		if red_rayCast3d.is_colliding():
 			red.visible = false
+			red_particles2.visible = false
 			red_particles.emitting = true
 			await get_tree().create_timer(10.0).timeout
 			queue_free()
