@@ -3,9 +3,9 @@ extends Node3D
 var building = preload("res://building.tscn")
 
 func _ready():
-	var cube_size = 5 # The size of the cube
-	var cube_distance = 4 # The distance between the cubes
-	var cube_count = 128 # The number of cubes to spawn
+	var cube_size = 6 # The size of the cube
+	var cube_distance = 8 # The distance between the cubes
+	var cube_count = 26 # The number of cubes to spawn
 
 	var side_length = int(sqrt(cube_count)) # Calculate the side length of the square
 
