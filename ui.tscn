@@ -1,77 +1,116 @@
 [gd_scene format=3 uid="uid://dcfpv8wmsnae7"]
 
-[node name="UI" type="Node2D"]
+[node name="CanvasLayer" type="CanvasLayer"]
 
-[node name="Hotbar" type="Panel" parent="."]
-offset_left = 355.0
-offset_top = 599.0
-offset_right = 821.0
-offset_bottom = 643.0
-size_flags_vertical = 8
-
-[node name="BLUE" type="Panel" parent="Hotbar"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -20.0
-offset_right = 104.0
-offset_bottom = 20.0
-grow_vertical = 2
-
-[node name="cooldown1" type="Label" parent="Hotbar/BLUE"]
-layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -13.0
-offset_right = 54.0
-offset_bottom = 13.0
-grow_vertical = 2
-
-[node name="RED" type="Panel" parent="Hotbar"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -52.0
-offset_top = -20.0
-offset_right = 52.0
-offset_bottom = 20.0
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="cooldown2" type="Label" parent="Hotbar/RED"]
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
 layout_mode = 1
-anchors_preset = 4
-anchor_top = 0.5
-anchor_bottom = 0.5
-offset_top = -13.0
-offset_right = 54.0
-offset_bottom = 13.0
-grow_vertical = 2
-
-[node name="PURPLE" type="Panel" parent="Hotbar"]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
+anchors_preset = 15
 anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -89.0
-offset_top = -20.0
-offset_bottom = 20.0
-grow_horizontal = 0
+anchor_bottom = 1.0
+grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 200
+theme_override_constants/margin_right = 200
 
-[node name="cooldown3" type="Label" parent="Hotbar/PURPLE"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Panel" type="Panel" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Panel"]
+layout_mode = 1
+offset_right = 150.0
+offset_bottom = 50.0
+
+[node name="blue_cooldown" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Panel/Panel"]
 layout_mode = 1
 anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_top = -13.0
-offset_right = 60.0
+offset_right = 49.0
 offset_bottom = 13.0
 grow_vertical = 2
+text = "BLUE: "
+
+[node name="Panel2" type="Panel" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.5
+anchor_right = 0.3
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -25.0
+offset_right = 100.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="red_cooldown" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Panel/Panel2"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -13.0
+offset_right = 49.0
+offset_bottom = 13.0
+grow_vertical = 2
+text = "RED: "
+
+[node name="Panel3" type="Panel" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.7
+anchor_right = 0.7
+offset_left = -150.0
+offset_bottom = 50.0
+grow_horizontal = 0
+
+[node name="purple_cooldown" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Panel/Panel3"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -13.0
+offset_right = 68.0
+offset_bottom = 13.0
+grow_vertical = 2
+text = "PURPLE: "
+
+[node name="Panel4" type="Panel" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -150.0
+offset_bottom = 50.0
+grow_horizontal = 0
+
+[node name="domain_cooldown" type="Label" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/Panel/Panel4"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -13.0
+offset_right = 68.0
+offset_bottom = 13.0
+grow_vertical = 2
+text = "INFINITE
+VOID: "

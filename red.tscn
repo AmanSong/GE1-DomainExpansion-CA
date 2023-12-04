@@ -39,6 +39,7 @@ mesh = SubResource("SphereMesh_wx7cx")
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 target_position = Vector3(0, 0, -1)
+collide_with_areas = true
 
 [node name="CPUParticles3D" type="CPUParticles3D" parent="."]
 amount = 64

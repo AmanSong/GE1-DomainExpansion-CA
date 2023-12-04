@@ -15,12 +15,15 @@ shape = SubResource("CapsuleShape3D_2dogd")
 
 [node name="Camera3D" type="Camera3D" parent="POV"]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="UI" parent="CanvasLayer" instance=ExtResource("2_0486t")]
-
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 attenuation_model = 3
 
 [node name="AudioStreamPlayer3D2" type="AudioStreamPlayer3D" parent="."]
 attenuation_model = 3
+
+[node name="CanvasLayer" parent="." instance=ExtResource("2_0486t")]
+
+[node name="blue_cooldown" parent="CanvasLayer/Control/MarginContainer/VBoxContainer/HBoxContainer/Panel/Panel" index="0"]
+metadata/_edit_use_anchors_ = true
+
+[editable path="CanvasLayer"]

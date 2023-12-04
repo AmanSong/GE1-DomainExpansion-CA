@@ -8,7 +8,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var mouse_sensitivity = 0.25
 @onready var pov = $POV
 @onready var player = $"."
-@onready var ui = $CanvasLayer/UI
+@onready var ui = $CanvasLayer
+
 
 @onready var audio_player = $AudioStreamPlayer3D 
 
@@ -24,14 +25,17 @@ var domain = preload("res://infinite_void.tscn")
 @export var technique_blue_cooldown = 5.0 
 @export var technique_red_cooldown = 5.0
 @export var technique_purple_cooldown = 20.0
+@export var domain_expansion_cooldown = 30.0
 
 # Cooldown timers
 var blue_cooldown_timer = 0.0
 var red_cooldown_timer = 0.0
 var purple_cooldown_timer = 0.0
+var domain_cooldown_timer = 0.0
 var blue_cooldown_label : Label
 var red_cooldown_label : Label
 var purple_cooldown_label : Label
+var domain_cooldown_label : Label
 
 
 # Called when the node enters the scene tree for the first time.
@@ -39,9 +43,10 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	# Access the UI labels within the UI hierarchy
-	blue_cooldown_label = ui.get_node("Hotbar/BLUE/cooldown1")
-	red_cooldown_label = ui.get_node("Hotbar/RED/cooldown2")
-	purple_cooldown_label = ui.get_node("Hotbar/PURPLE/cooldown3")
+	blue_cooldown_label = ui.get_node("Control/MarginContainer/VBoxContainer/HBoxContainer/Panel/Panel/blue_cooldown")
+	red_cooldown_label = ui.get_node("Control/MarginContainer/VBoxContainer/HBoxContainer/Panel/Panel2/red_cooldown")
+	purple_cooldown_label = ui.get_node("Control/MarginContainer/VBoxContainer/HBoxContainer/Panel/Panel3/purple_cooldown")
+	domain_cooldown_label = ui.get_node("Control/MarginContainer/VBoxContainer/HBoxContainer/Panel/Panel4/domain_cooldown")
 
 func _process(delta):
 	# Reset jump status when the character lands
@@ -55,10 +60,12 @@ func _process(delta):
 	blue_cooldown_timer = max(0, blue_cooldown_timer - delta)
 	red_cooldown_timer = max(0, red_cooldown_timer - delta)
 	purple_cooldown_timer = max(0, purple_cooldown_timer - delta)
+	domain_cooldown_timer = max(0, domain_cooldown_timer - delta)
 	# Update UI labels with remaining cooldown times
 	blue_cooldown_label.text = "Blue Cooldown: " + str(int(blue_cooldown_timer))
 	red_cooldown_label.text = "Red Cooldown: " + str(int(red_cooldown_timer))
 	purple_cooldown_label.text = "Purple Cooldown: " + str(int(purple_cooldown_timer))
+	domain_cooldown_label.text = "Domain Cooldown: " + str(int(domain_cooldown_timer))
 
 # for camera movement
 func _input(event):
@@ -109,8 +116,9 @@ func _physics_process(delta):
 		purple_cooldown_timer = technique_purple_cooldown
 		
 	# for domain expansion
-	if Input.is_action_just_pressed("domain_expansion"):
+	if Input.is_action_just_pressed("domain_expansion") and domain_cooldown_timer == 0:
 		domain_expansion()
+		domain_cooldown_timer = domain_expansion_cooldown
 
 	move_and_slide()
 	
@@ -212,10 +220,10 @@ func domain_expansion():
 	var domain_instance = domain.instantiate()
 	
 	# spawn it where player is and move upwards
-	domain_instance.global_transform.origin = pov.global_transform.origin+ pov.global_transform.basis.y * 100
+	domain_instance.global_transform.origin = pov.global_transform.origin+ pov.global_transform.basis.y * 150
 	
 	# move player up as well
-	player.global_transform.origin += pov.global_transform.basis.y * 100
+	player.global_transform.origin += pov.global_transform.basis.y * 150
 	
 	get_parent().add_child(domain_instance)
 	
