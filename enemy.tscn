@@ -10,14 +10,15 @@ material = SubResource("StandardMaterial3D_u3a8s")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_42111"]
 
-[node name="enemy" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+[node name="enemy" type="CharacterBody3D" groups=["enemy"]]
 script = ExtResource("1_7k8k0")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." groups=["enemy"]]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 1.8, 0)
 mesh = SubResource("CapsuleMesh_i0gpa")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." groups=["enemy"]]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 1.8, 0)
 shape = SubResource("CapsuleShape3D_42111")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]

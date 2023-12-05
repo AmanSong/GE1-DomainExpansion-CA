@@ -25,7 +25,7 @@ var domain = preload("res://infinite_void.tscn")
 @export var technique_blue_cooldown = 5.0 
 @export var technique_red_cooldown = 5.0
 @export var technique_purple_cooldown = 20.0
-@export var domain_expansion_cooldown = 30.0
+@export var domain_expansion_cooldown = 65.0
 
 # Cooldown timers
 var blue_cooldown_timer = 0.0
@@ -126,6 +126,8 @@ func technique_blue():
 	if blue:  # Check if the blue scene is loaded
 		var blue_instance = blue.instantiate()
 		
+		
+		
 		# move blue to the front and more to the left
 		blue_instance.position = position + transform.basis.z * -2 + transform.basis.x * -2
 
@@ -214,10 +216,12 @@ func technique_purple():
 	else:
 		print("Error: Purple scene not loaded")
 		
-		
+signal domain_instance_ready
 func domain_expansion():
 	# instantiate domain
 	var domain_instance = domain.instantiate()
+	
+	domain_instance.connect("ready", _on_domain_ready)
 	
 	# spawn it where player is and move upwards
 	domain_instance.global_transform.origin = pov.global_transform.origin+ pov.global_transform.basis.y * 150
@@ -227,4 +231,6 @@ func domain_expansion():
 	
 	get_parent().add_child(domain_instance)
 	
-
+func _on_domain_ready():
+	print("Domain instance is ready")
+	emit_signal("domain_instance_ready")

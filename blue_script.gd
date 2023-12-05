@@ -32,6 +32,12 @@ func _process(delta):
 			blue.visible = false
 			particles2.visible = false
 			particles.emitting = true
+			
+			var collider = rayCast3d.get_collider()
+			if collider and collider.is_in_group("enemy"):
+				print("Hit enemy")
+				collider.blue_hit()
+				
 			await get_tree().create_timer(10.0).timeout
 			queue_free()
 

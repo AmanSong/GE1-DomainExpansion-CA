@@ -4,7 +4,6 @@ const SPEED = 50.0
 
 @onready var purple = $MeshInstance3D
 @onready var ray_cast_3d = $RayCast3D
-@onready var purple_animation = $PurpleAnimation
 
 # Load sound
 @onready var audio_player = $AudioStreamPlayer3D 
@@ -19,13 +18,14 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if is_moving:
-		# Play the sound when fired
-#		if not audio_player.playing:
-#			audio_player.stream = purple_sound
-#			audio_player.play()
-			
 		position += transform.basis * Vector3(0, 0, -SPEED) * delta
+		
 		if ray_cast_3d.is_colliding():
+			print('purple is coliding')
+			var collider = ray_cast_3d.get_collider()
+			if collider and collider.is_in_group("enemy"):
+				collider.purple_hit()
+				
 			await get_tree().create_timer(10.0).timeout
 			queue_free()
 
