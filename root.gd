@@ -27,8 +27,14 @@ func _ready():
 
 func _on_domain_instance_ready():
 	print("Received signal: Domain instance is ready")
-		
-	world_environment.environment.background_mode = Environment.BG_COLOR
-	world_environment.environment.background_color = Color(0, 0, 0)
+	world_environment.environment.background_mode = Environment.BG_SKY
+#	world_environment.environment.background_color = Color(1, 0, 0)
+	
+	var panorama_sky_material = PanoramaSkyMaterial.new()
+	panorama_sky_material = load("res://Images/infinite_void.tres")
+	
+	world_environment.environment.sky.sky_material = panorama_sky_material
+
+
 
 

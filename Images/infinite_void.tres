@@ -1,0 +1,7 @@
+[gd_resource type="PanoramaSkyMaterial" load_steps=2 format=3 uid="uid://c5i0a5ylnl075"]
+
+[ext_resource type="Texture2D" uid="uid://c6m6wsmxjdi2h" path="res://Images/infiniteVoid.png" id="1_0if4u"]
+
+[resource]
+resource_local_to_scene = true
+panorama = ExtResource("1_0if4u")

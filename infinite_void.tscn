@@ -18,6 +18,7 @@ var sphere_radius = 75
 var domain_sfx: AudioStream = preload(\"res://Sounds/infinite_void_sfx.mp3\")
 
 @onready var speed_lines = $speed_lines
+@onready var csg_combiner_3d = $CSGCombiner3D
 
 
 func _ready():
@@ -28,6 +29,7 @@ func _ready():
 	# to allow for sfx to play
 	await get_tree().create_timer(2.5).timeout
 	
+	var cube_instances = []
 	
 	for lat in range(num_cubes_latitude):
 		await get_tree().create_timer(0.095).timeout
@@ -49,8 +51,19 @@ func _ready():
 			cube_instance.transform.origin = Vector3(x, z, y)
 			# Add the cube to the scene
 			add_child(cube_instance)
+			
+			cube_instances.append(cube_instance)
 	
 	speed_lines.emitting = true
+	await get_tree().create_timer(20.0).timeout
+	
+	#disable all
+	speed_lines.emitting = false
+	csg_combiner_3d.visible = false
+	# Disable cubes
+	for cube_instance in cube_instances:
+		cube_instance.queue_free()
+	
 	
 	await get_tree().create_timer(30.0).timeout
 	queue_free()
@@ -93,7 +106,6 @@ script = SubResource("GDScript_l2t63")
 
 [node name="BarrierFloor" type="MeshInstance3D" parent="."]
 transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 0, -1, 0)
-visible = false
 transparency = 1.0
 mesh = SubResource("PlaneMesh_61sg0")
 
@@ -103,7 +115,6 @@ mesh = SubResource("PlaneMesh_61sg0")
 shape = SubResource("ConcavePolygonShape3D_wbapj")
 
 [node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
-visible = false
 operation = 2
 
 [node name="sphere1" type="MeshInstance3D" parent="CSGCombiner3D"]
@@ -125,7 +136,6 @@ volume_db = 1.0
 
 [node name="speed_lines" type="CPUParticles3D" parent="."]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
-visible = false
 emitting = false
 amount = 16
 speed_scale = 30.0
