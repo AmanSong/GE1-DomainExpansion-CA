@@ -2,8 +2,8 @@ extends CharacterBody3D
 
 var player = null
 
-var SPEED = 5.0
-var health = 100.0
+@export var SPEED = 2.5
+var health = 25.0
 
 var is_hit = false
 var hit_timer = 0.0
@@ -17,6 +17,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player = get_node(player_path)
+	print(player_path)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -71,8 +72,14 @@ func blue_hit():
 func purple_hit():
 	queue_free()
 
+func domain_hit():
+	if not is_hit:
+			is_hit = true
 
-
+			# Stop the navigation agent by setting the target_position to the current position
+			nav_agent.set_target_position(global_transform.origin)
+			
+			enemy.global_transform.origin += enemy.global_transform.basis.y * 160
 
 
 

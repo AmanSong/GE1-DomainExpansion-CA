@@ -2,9 +2,9 @@ extends CharacterBody3D
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 
-@export var current_speed = 5.0
-@export var walk_speed = 5.0
-@export var sprint_speed = 10.0
+@export var current_speed = 10.0
+@export var walk_speed = 10.0
+@export var sprint_speed = 20.0
 @export var mouse_sensitivity = 0.25
 @onready var pov = $POV
 @onready var player = $"."
@@ -215,22 +215,28 @@ func technique_purple():
 		
 	else:
 		print("Error: Purple scene not loaded")
-		
+
 signal domain_instance_ready
+signal domain_instance_finished
 func domain_expansion():
 	# instantiate domain
 	var domain_instance = domain.instantiate()
 	
 	domain_instance.connect("ready", _on_domain_ready)
+	domain_instance.connect("domain_instance_finished", _on_domain_finished)
 	
 	# spawn it where player is and move upwards
 	domain_instance.global_transform.origin = pov.global_transform.origin+ pov.global_transform.basis.y * 150
 	
 	# move player up as well
 	player.global_transform.origin += pov.global_transform.basis.y * 150
-	
+
 	get_parent().add_child(domain_instance)
 	
 func _on_domain_ready():
 	print("Domain instance is ready")
 	emit_signal("domain_instance_ready")
+
+func _on_domain_finished():
+	print("Domain instance is finished")
+	emit_signal("domain_instance_finished")

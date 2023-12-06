@@ -1,4 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://cwhwl065yn8s6"]
+[gd_scene load_steps=12 format=3 uid="uid://cwhwl065yn8s6"]
+
+[ext_resource type="Shader" path="res://infinite_void.gdshader" id="1_kjmba"]
 
 [sub_resource type="GDScript" id="GDScript_l2t63"]
 script/source = "extends Node3D
@@ -19,7 +21,9 @@ var domain_sfx: AudioStream = preload(\"res://Sounds/infinite_void_sfx.mp3\")
 
 @onready var speed_lines = $speed_lines
 @onready var csg_combiner_3d = $CSGCombiner3D
+@onready var barrier_2 = $barrier2
 
+signal domain_instance_finished
 
 func _ready():
 	if not audio_player.playing:
@@ -55,17 +59,23 @@ func _ready():
 			cube_instances.append(cube_instance)
 	
 	speed_lines.emitting = true
+	barrier_2.visible = true
 	await get_tree().create_timer(20.0).timeout
 	
 	#disable all
 	speed_lines.emitting = false
 	csg_combiner_3d.visible = false
+	barrier_2.visible = false
+	
 	# Disable cubes
 	for cube_instance in cube_instances:
 		cube_instance.queue_free()
 	
+	await get_tree().create_timer(15.0).timeout
 	
-	await get_tree().create_timer(30.0).timeout
+	# Emit the signal before calling queue_free()
+	emit_signal(\"domain_instance_finished\")
+
 	queue_free()
 	
 	
@@ -82,13 +92,13 @@ material = SubResource("StandardMaterial3D_583ce")
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_wbapj"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0eys1"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g1k53"]
 cull_mode = 2
 emission_enabled = true
 emission = Color(1, 1, 1, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_scipp"]
-material = SubResource("StandardMaterial3D_0eys1")
+material = SubResource("StandardMaterial3D_g1k53")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8fcuk"]
 cull_mode = 2
@@ -100,6 +110,13 @@ emission = Color(0.913725, 0.352941, 0.717647, 1)
 material = SubResource("StandardMaterial3D_8fcuk")
 shape = 0
 size = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y4aaa"]
+render_priority = 0
+shader = ExtResource("1_kjmba")
+
+[sub_resource type="SphereMesh" id="SphereMesh_a3nw4"]
+material = SubResource("ShaderMaterial_y4aaa")
 
 [node name="InfiniteVoid" type="Node3D" groups=["domain"]]
 script = SubResource("GDScript_l2t63")
@@ -147,3 +164,13 @@ emission_sphere_radius = 80.0
 gravity = Vector3(0, 0, -50)
 tangential_accel_min = -100.0
 tangential_accel_max = -100.0
+
+[node name="barrier2" type="CSGCombiner3D" parent="."]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="barrier2"]
+transform = Transform3D(140, 0, 0, 0, 140, 0, 0, 0, 140, 0, 0, 0)
+mesh = SubResource("SphereMesh_a3nw4")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="barrier2"]
+transform = Transform3D(145.9, 0, 0, 0, 145.9, 0, 0, 0, 145.9, 0, 0, 0)
