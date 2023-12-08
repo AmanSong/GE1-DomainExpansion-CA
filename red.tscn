@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7urbr6q0wc4u"]
+[gd_scene load_steps=9 format=3 uid="uid://b7urbr6q0wc4u"]
 
 [ext_resource type="Script" path="res://red_script.gd" id="1_qxso2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_enhbi"]
 albedo_color = Color(1, 0, 0, 0)
+metallic = 1.0
+metallic_specular = 1.0
 roughness = 0.0
 emission_enabled = true
 emission = Color(1, 0, 0, 1)
@@ -12,15 +14,41 @@ emission_energy_multiplier = 16.0
 [sub_resource type="SphereMesh" id="SphereMesh_wx7cx"]
 material = SubResource("StandardMaterial3D_enhbi")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5rqyw"]
-transparency = 1
-albedo_color = Color(1, 0, 0, 1)
-emission_enabled = true
-emission = Color(1, 0, 0, 1)
-emission_energy_multiplier = 16.0
+[sub_resource type="Shader" id="Shader_jer3c"]
+code = "shader_type spatial;
 
-[sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_slhk7"]
-material = SubResource("StandardMaterial3D_5rqyw")
+void vertex() {
+    // Transform the vertex position with wavy effect
+    VERTEX.x += sin(TIME * 10.0 + VERTEX.y * 10.0) * 1.00; 
+}
+
+void fragment() {
+    // Set the initial color to black
+    vec3 base_color = vec3(1.0, 0.0, 0.1);
+    vec3 emission_color = vec3(1.0, 0.0, 0.0); // Adjust the emission color as needed
+    float emission_strength = 2.0; // Adjust the emission strength as needed
+
+    ALPHA = 0.2;
+
+    // Add emission to the base color
+    vec3 final_color = base_color + emission_color * emission_strength;
+
+    ALBEDO = final_color;
+
+    // Set emission for glowing effect
+    EMISSION = emission_color * emission_strength;
+}
+
+render_mode cull_disabled;"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3fj6i"]
+render_priority = 0
+shader = SubResource("Shader_jer3c")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_wfqjo"]
+material = SubResource("ShaderMaterial_3fj6i")
+size = Vector2(1.5, 1.5)
+orientation = 0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_76pof"]
 albedo_color = Color(0.623529, 0.0941176, 0, 1)
@@ -45,7 +73,7 @@ collide_with_areas = true
 amount = 64
 speed_scale = 5.0
 local_coords = true
-mesh = SubResource("RibbonTrailMesh_slhk7")
+mesh = SubResource("PlaneMesh_wfqjo")
 emission_shape = 1
 emission_sphere_radius = 1.0
 particle_flag_align_y = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://c464kmocyu8so"]
+[gd_scene load_steps=9 format=3 uid="uid://c464kmocyu8so"]
 
 [ext_resource type="Script" path="res://enemy.gd" id="1_7k8k0"]
 
@@ -9,6 +9,18 @@ albedo_color = Color(1, 0, 0, 1)
 material = SubResource("StandardMaterial3D_u3a8s")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_42111"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4u8kx"]
+albedo_color = Color(0.67451, 0.00392157, 0.286275, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_5tsgy"]
+material = SubResource("StandardMaterial3D_4u8kx")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ir0qj"]
+albedo_color = Color(0.611765, 0.113725, 0.2, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_k3uyb"]
+material = SubResource("StandardMaterial3D_ir0qj")
 
 [node name="enemy" type="CharacterBody3D" groups=["enemy"]]
 script = ExtResource("1_7k8k0")
@@ -22,3 +34,32 @@ transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 1.8, 0)
 shape = SubResource("CapsuleShape3D_42111")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="destroyed_blue" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.95687, 0)
+emitting = false
+amount = 32
+lifetime = 2.0
+one_shot = true
+speed_scale = 2.0
+mesh = SubResource("SphereMesh_5tsgy")
+emission_shape = 2
+emission_sphere_radius = 2.0
+gravity = Vector3(0, -1, 0)
+radial_accel_min = -100.0
+radial_accel_max = -100.0
+tangential_accel_min = 25.0
+tangential_accel_max = 25.0
+
+[node name="destroyed_red" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.1799, 0)
+emitting = false
+amount = 64
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+mesh = SubResource("SphereMesh_k3uyb")
+emission_shape = 1
+emission_sphere_radius = 2.0
+radial_accel_min = 61.64
+radial_accel_max = 61.64

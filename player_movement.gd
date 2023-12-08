@@ -119,14 +119,16 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("domain_expansion") and domain_cooldown_timer == 0:
 		domain_expansion()
 		domain_cooldown_timer = domain_expansion_cooldown
+	
+	# for domain expansion
+	if Input.is_action_just_pressed("teleport"):
+		teleport()
 
 	move_and_slide()
 	
 func technique_blue():
 	if blue:  # Check if the blue scene is loaded
 		var blue_instance = blue.instantiate()
-		
-		
 		
 		# move blue to the front and more to the left
 		blue_instance.position = position + transform.basis.z * -2 + transform.basis.x * -2
@@ -240,3 +242,9 @@ func _on_domain_ready():
 func _on_domain_finished():
 	print("Domain instance is finished")
 	emit_signal("domain_instance_finished")
+
+var teleport_sfx: AudioStream = preload("res://Sounds/teleport_sfx.mp3")
+func teleport():
+	audio_player.stream = teleport_sfx
+	audio_player.play()
+	player.global_transform.origin += pov.global_transform.basis.z.normalized() * -20

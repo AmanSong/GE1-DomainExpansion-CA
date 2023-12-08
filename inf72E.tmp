@@ -64,16 +64,18 @@ func _ready():
 	barrier_2.visible = true
 	await get_tree().create_timer(20.0).timeout
 	
+	#play sounds/songs
+	audio_player.stream = deep_boom
+	audio_player.play
+	await get_tree().create_timer(2.0).timeout
+	audio_player.stream = gojo_theme
+	audio_player.play()
+	await get_tree().create_timer(1.0).timeout
+	
 	#disable all
 	speed_lines.emitting = false
 	csg_combiner_3d.visible = false
 	barrier_2.visible = false
-	
-	#play sounds/songs
-	audio_player.stream = deep_boom
-	audio_player.play()
-	audio_player.stream = gojo_theme
-	audio_player.play()
 	
 	# Disable cubes
 	for cube_instance in cube_instances:
@@ -108,13 +110,6 @@ emission = Color(1, 1, 1, 1)
 [sub_resource type="SphereMesh" id="SphereMesh_scipp"]
 material = SubResource("StandardMaterial3D_g1k53")
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_y4aaa"]
-render_priority = 0
-shader = ExtResource("1_kjmba")
-
-[sub_resource type="SphereMesh" id="SphereMesh_a3nw4"]
-material = SubResource("ShaderMaterial_y4aaa")
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8fcuk"]
 cull_mode = 2
 albedo_color = Color(1, 0.431373, 0.792157, 1)
@@ -125,6 +120,13 @@ emission = Color(0.913725, 0.352941, 0.717647, 1)
 material = SubResource("StandardMaterial3D_8fcuk")
 shape = 0
 size = 100.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y4aaa"]
+render_priority = 0
+shader = ExtResource("1_kjmba")
+
+[sub_resource type="SphereMesh" id="SphereMesh_a3nw4"]
+material = SubResource("ShaderMaterial_y4aaa")
 
 [node name="InfiniteVoid" type="Node3D" groups=["domain"]]
 script = SubResource("GDScript_l2t63")
@@ -152,16 +154,6 @@ skeleton = NodePath("../..")
 transform = Transform3D(99.9, 0, 0, 0, 99.9, 0, 0, 0, 99.9, 0, 0, 0)
 skeleton = NodePath("../..")
 
-[node name="barrier2" type="CSGCombiner3D" parent="."]
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="barrier2"]
-transform = Transform3D(140, 0, 0, 0, 140, 0, 0, 0, 140, 0, 0, 0)
-mesh = SubResource("SphereMesh_a3nw4")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="barrier2"]
-transform = Transform3D(145.9, 0, 0, 0, 145.9, 0, 0, 0, 145.9, 0, 0, 0)
-
 [node name="Timer" type="Timer" parent="."]
 wait_time = 15.0
 
@@ -182,3 +174,13 @@ emission_sphere_radius = 80.0
 gravity = Vector3(0, 0, -50)
 tangential_accel_min = -100.0
 tangential_accel_max = -100.0
+
+[node name="barrier2" type="CSGCombiner3D" parent="."]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="barrier2"]
+transform = Transform3D(140, 0, 0, 0, 140, 0, 0, 0, 140, 0, 0, 0)
+mesh = SubResource("SphereMesh_a3nw4")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="barrier2"]
+transform = Transform3D(145.9, 0, 0, 0, 145.9, 0, 0, 0, 145.9, 0, 0, 0)

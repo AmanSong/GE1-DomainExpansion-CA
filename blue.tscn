@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://c8kmueaafcl4m"]
+[gd_scene load_steps=9 format=3 uid="uid://c8kmueaafcl4m"]
 
 [ext_resource type="Script" path="res://blue_script.gd" id="1_odeyt"]
+[ext_resource type="Shader" path="res://blue.gdshader" id="2_qdylo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6nx2y"]
 transparency = 1
@@ -12,15 +13,13 @@ emission_energy_multiplier = 16.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_dxf4i"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vdj5d"]
-transparency = 1
-albedo_color = Color(0, 0, 0.188235, 1)
-emission_enabled = true
-emission = Color(0.00392157, 0.227451, 1, 1)
-emission_energy_multiplier = 16.0
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6sbax"]
+render_priority = 0
+shader = ExtResource("2_qdylo")
 
 [sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_n0quy"]
-material = SubResource("StandardMaterial3D_vdj5d")
+material = SubResource("ShaderMaterial_6sbax")
+size = 0.75
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4kqvh"]
 albedo_color = Color(0, 0.415686, 0.917647, 1)
@@ -42,7 +41,7 @@ mesh = SubResource("SphereMesh_dxf4i")
 target_position = Vector3(0, 0, -1)
 
 [node name="CPUParticles3D" type="CPUParticles3D" parent="."]
-amount = 64
+amount = 32
 speed_scale = 2.0
 explosiveness = 0.5
 randomness = 1.0

@@ -9,6 +9,9 @@ var is_hit = false
 var hit_timer = 0.0
 var hit_duration = 1.0  
 
+@onready var destroyed_blue = $destroyed_blue
+@onready var destroyed_red = $destroyed_red
+
 @export var player_path : NodePath
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 @onready var enemy = $"."  # Make sure this is the correct path to the enemy node
@@ -48,7 +51,6 @@ func _physics_process(delta):
 func red_hit():
 	if not is_hit:
 		is_hit = true
-		health -= 25
 
 		# Stop the navigation agent by setting the target_position to the current position
 		nav_agent.set_target_position(global_transform.origin)
@@ -59,14 +61,21 @@ func red_hit():
 		# Apply a push force in the opposite direction of the player
 		enemy.global_transform.origin += direction_to_player * -10 
 		
+		
+		destroyed_red.emitting = true
+		await get_tree().create_timer(0.5).timeout
+		health -= 25
+		
 func blue_hit():
 	if not is_hit:
-		health -= 25
 		is_hit = true
 		hit_duration = 3
 
 		# Stop the navigation agent by setting the target_position to the current position
 		nav_agent.set_target_position(global_transform.origin)
+		destroyed_blue.emitting = true
+		await get_tree().create_timer(2.0).timeout
+		health -= 25
 		
 		
 func purple_hit():
