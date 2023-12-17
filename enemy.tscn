@@ -10,17 +10,17 @@ material = SubResource("StandardMaterial3D_u3a8s")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_42111"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4u8kx"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avcgb"]
 albedo_color = Color(0.67451, 0.00392157, 0.286275, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_5tsgy"]
-material = SubResource("StandardMaterial3D_4u8kx")
+material = SubResource("StandardMaterial3D_avcgb")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ir0qj"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jfic"]
 albedo_color = Color(0.611765, 0.113725, 0.2, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_k3uyb"]
-material = SubResource("StandardMaterial3D_ir0qj")
+material = SubResource("StandardMaterial3D_8jfic")
 
 [node name="enemy" type="CharacterBody3D" groups=["enemy"]]
 script = ExtResource("1_7k8k0")
