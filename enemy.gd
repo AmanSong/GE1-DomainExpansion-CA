@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 var player = null
 
-@export var SPEED = 2.5
+@export var SPEED = 5
 @export var ATTACK_RANGE = 2.5
 @export var DAMAGE = 10
 var health = 25.0
@@ -15,8 +15,8 @@ var hit_duration = 1.0
 @onready var destroyed_red = $destroyed_red
 @onready var animation_tree = $AnimationTree
 @onready var person = $"../../person"
-
 @export var player_path : NodePath
+
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 @onready var enemy = $"."  # Make sure this is the correct path to the enemy node
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")

@@ -7,10 +7,18 @@ var building = preload("res://building.tscn")
 var enemy_instances = []
 var enemy_script = preload("res://enemy.tscn")
 
+@onready var spawn_points = $spawn_points
+@onready var navigation_region_3d = $NavigationRegion3D
+
+var monster = load("res://monster.tscn")
+var monster_instance
+
 func _ready():
 	# Connect to the tree_entered signal of each node in the scene
 	$Player.connect("domain_instance_ready", _on_domain_instance_ready)
 	$Player.connect("domain_instance_finished", _on_domain_finished)
+	
+	randomize()
 	
 	# old code to spawn in red capsule enemies
 #	var spawn_radius = 100.0
@@ -73,3 +81,17 @@ func _on_domain_finished():
 	for enemy_instance in enemy_instances:
 		if is_instance_valid(enemy_instance):
 			enemy_instance.purple_hit()
+			
+# function to choose random spawn point
+func _get_random_child(parent_node):
+	var random_id = randi() % parent_node.get_child_count()
+	return parent_node.get_child(random_id)
+
+func _on_spawn_timer_timeout():
+	var spawn_point = _get_random_child(spawn_points).global_position
+	monster_instance = monster.instantiate()
+	monster_instance.player_path = "../../person"
+	monster_instance.position = spawn_point
+	navigation_region_3d.add_child(monster_instance)
+#	# Add the spawned monster to the array
+#	enemy_instances.append(monster_instance)
