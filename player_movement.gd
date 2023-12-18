@@ -10,7 +10,6 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 @onready var player = $"."
 @onready var ui = $CanvasLayer
 
-
 @onready var audio_player = $AudioStreamPlayer3D 
 
 var is_jumping = false

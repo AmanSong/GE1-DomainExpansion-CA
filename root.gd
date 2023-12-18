@@ -12,7 +12,6 @@ func _ready():
 	$Player.connect("domain_instance_ready", _on_domain_instance_ready)
 	$Player.connect("domain_instance_finished", _on_domain_finished)
 	
-	
 	# old code to spawn in red capsule enemies
 #	var spawn_radius = 100.0
 #	var floor_height = 0.0 
