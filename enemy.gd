@@ -3,6 +3,8 @@ extends CharacterBody3D
 var player = null
 
 @export var SPEED = 2.5
+@export var ATTACK_RANGE = 2.5
+@export var DAMAGE = 10
 var health = 25.0
 
 var is_hit = false
@@ -11,6 +13,8 @@ var hit_duration = 1.0
 
 @onready var destroyed_blue = $destroyed_blue
 @onready var destroyed_red = $destroyed_red
+@onready var animation_tree = $AnimationTree
+@onready var person = $"../../person"
 
 @export var player_path : NodePath
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
@@ -21,7 +25,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 func _ready():
 	player = get_node(player_path)
 	print(player_path)
-
+	
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if health <= 0:
@@ -34,6 +39,9 @@ func _process(delta):
 		velocity = (next_nav_point - global_transform.origin).normalized() * SPEED
 		
 		look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z), Vector3.UP)
+		
+		animation_tree.set("parameters/conditions/attack", _target_in_range())
+		animation_tree.set("parameters/conditions/run", !_target_in_range())
 		
 		move_and_slide()
 
@@ -93,6 +101,11 @@ func domain_hit():
 			
 			enemy.global_transform.origin += enemy.global_transform.basis.y * 160
 
-
-
+signal damage_taken
+func _target_in_range():
+	return global_transform.origin.distance_to(person.global_transform.origin) < ATTACK_RANGE
+		
+func _hit_finished():
+	print('Monster attacked!')
+	emit_signal("damage_taken", DAMAGE)
 

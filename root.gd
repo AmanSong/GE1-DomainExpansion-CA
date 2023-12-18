@@ -13,23 +13,23 @@ func _ready():
 	$Player.connect("domain_instance_finished", _on_domain_finished)
 	
 	
-	var spawn_radius = 100.0
-	var floor_height = 0.0 
-
-	for i in range(10):
-		var enemy_instance = enemy_script.instantiate()
-
-		# Set random position on the floor
-		var random_position = Vector3(randf(), 0.0, randf()).normalized() * randf() * spawn_radius
-		random_position.y = floor_height
-		
-		enemy_instance.transform.origin = random_position
-		enemy_instance.SPEED = randf() * (5 - 1) + 1
-		enemy_instance.player_path = "../Player"
-
-		add_child(enemy_instance)
-		enemy_instances.append(enemy_instance)
-
+	# old code to spawn in red capsule enemies
+#	var spawn_radius = 100.0
+#	var floor_height = 0.0 
+#
+#	for i in range(10):
+#		var enemy_instance = enemy_script.instantiate()
+#
+#		# Set random position on the floor
+#		var random_position = Vector3(randf(), 0.0, randf()).normalized() * randf() * spawn_radius
+#		random_position.y = floor_height
+#
+#		enemy_instance.transform.origin = random_position
+#		enemy_instance.SPEED = randf() * (5 - 1) + 1
+#		enemy_instance.player_path = "../Player"
+#
+#		add_child(enemy_instance)
+#		enemy_instances.append(enemy_instance)
 
 	# old code for placing buildings
 #	var cube_size = 6

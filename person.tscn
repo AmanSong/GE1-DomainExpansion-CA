@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://d1e78jn1d0v15"]
+
+[ext_resource type="Script" path="res://person.gd" id="1_hgjar"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0sbwd"]
+albedo_color = Color(1, 0.603922, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pgyx2"]
+material = SubResource("StandardMaterial3D_0sbwd")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8xbly"]
+
+[node name="person" type="Node3D"]
+script = ExtResource("1_hgjar")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_pgyx2")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/StaticBody3D"]
+shape = SubResource("CapsuleShape3D_8xbly")

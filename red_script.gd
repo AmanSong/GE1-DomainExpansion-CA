@@ -36,7 +36,6 @@ func _process(delta):
 				print("Hit enemy")
 				collider.red_hit()
 				
-				
 			await get_tree().create_timer(10.0).timeout
 			queue_free()
 
