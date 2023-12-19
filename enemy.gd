@@ -50,10 +50,14 @@ func _process(delta):
 		move_and_slide()
 
 	if is_hit:
+		nav_agent.set_target_position(person_.global_transform.origin)
+		var next_nav_point = nav_agent.get_next_path_position()
+		velocity = (next_nav_point - global_transform.origin).normalized() * 0
+		
 		hit_timer += delta
 		if hit_timer >= hit_duration:
-			is_hit = false
 			SPEED = 5
+			is_hit = false
 			hit_timer = 0.0
 			
 
@@ -87,7 +91,6 @@ func blue_hit():
 	if not is_hit:
 		is_hit = true
 		hit_duration = 3
-
 		destroyed_blue.emitting = true
 		await get_tree().create_timer(2.0).timeout
 		health -= 25
@@ -100,11 +103,12 @@ func purple_hit():
 
 func domain_hit():
 	if not is_hit:
+		hit_duration = 20
 		is_hit = true
-		SPEED = 0
-		print('within domain')
-
-
+		
+		await get_tree().create_timer(20.0).timeout
+		purple_hit()
+	
 signal damage_taken
 func _target_in_range():
 	return global_transform.origin.distance_to(person.global_transform.origin) < ATTACK_RANGE
