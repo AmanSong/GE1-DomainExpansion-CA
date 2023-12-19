@@ -18,8 +18,8 @@ var sphere_radius = 75
 # Load sound
 @onready var audio_player = $AudioStreamPlayer3D 
 var domain_sfx: AudioStream = preload(\"res://Sounds/infinite_void_sfx.mp3\")
-var deep_boom: AudioStream = preload(\"res://Sounds/deep_boom.mp3\")
-var gojo_theme: AudioStream = preload(\"res://Sounds/gojo_theme.mp3\")
+var void_ambience: AudioStream = preload(\"res://Sounds/void.mp3\")
+var deep_boom: AudioStream = preload(\"res://Sounds/boom.mp3\")
 
 @onready var speed_lines = $speed_lines
 @onready var csg_combiner_3d = $CSGCombiner3D
@@ -62,24 +62,24 @@ func _ready():
 	
 	speed_lines.emitting = true
 	barrier_2.visible = true
-	await get_tree().create_timer(20.0).timeout
+	await get_tree().create_timer(3.0).timeout
 	
 	#disable all
 	speed_lines.emitting = false
 	csg_combiner_3d.visible = false
 	barrier_2.visible = false
-	
+
+	for cube_instance in cube_instances:
+		cube_instance.queue_free()
+		
 	#play sounds/songs
 	audio_player.stream = deep_boom
 	audio_player.play()
-	audio_player.stream = gojo_theme
+	await get_tree().create_timer(2.5).timeout
+	audio_player.stream = void_ambience
 	audio_player.play()
 	
-	# Disable cubes
-	for cube_instance in cube_instances:
-		cube_instance.queue_free()
-	
-	await get_tree().create_timer(20.0).timeout
+	await get_tree().create_timer(6.0).timeout
 	
 	# Emit the signal before calling queue_free()
 	emit_signal(\"domain_instance_finished\")

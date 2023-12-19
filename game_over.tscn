@@ -1,0 +1,52 @@
+[gd_scene load_steps=4 format=3 uid="uid://brjs2a2x122nf"]
+
+[ext_resource type="Script" path="res://game_over.gd" id="1_xd3ek"]
+[ext_resource type="Script" path="res://PlayButton.gd" id="2_s5b5c"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_ut37m"]
+font_size = 32
+font_color = Color(0, 0, 0, 1)
+
+[node name="game_over" type="Node2D"]
+script = ExtResource("1_xd3ek")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 0
+offset_right = 1142.0
+offset_bottom = 652.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -91.0
+offset_top = -230.0
+offset_right = 92.0
+offset_bottom = 44.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/ColorRect/VBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="Label" type="Label" parent="Control/ColorRect/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_ut37m")
+horizontal_alignment = 1
+
+[node name="Button" type="Button" parent="Control/ColorRect/VBoxContainer"]
+layout_mode = 2
+text = "PLAY AGAIN?"
+script = ExtResource("2_s5b5c")

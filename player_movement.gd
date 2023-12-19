@@ -226,11 +226,11 @@ func domain_expansion():
 	domain_instance.connect("ready", _on_domain_ready)
 	domain_instance.connect("domain_instance_finished", _on_domain_finished)
 	
-	# spawn it where player is and move upwards
-	domain_instance.global_transform.origin = pov.global_transform.origin+ pov.global_transform.basis.y * 150
-	
-	# move player up as well
-	player.global_transform.origin += pov.global_transform.basis.y * 150
+#	# spawn it where player is and move upwards
+#	domain_instance.global_transform.origin = pov.global_transform.origin+ pov.global_transform.basis.y * 150
+#
+#	# move player up as well
+#	player.global_transform.origin += pov.global_transform.basis.y * 150
 
 	get_parent().add_child(domain_instance)
 	

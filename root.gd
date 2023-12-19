@@ -3,20 +3,27 @@ extends Node3D
 var building = preload("res://building.tscn")
 @onready var world_environment : WorldEnvironment = $WorldEnvironment 
 @onready var city_asset = $NavigationRegion3D/CityAsset
-
-var enemy_instances = []
-var enemy_script = preload("res://enemy.tscn")
-
 @onready var spawn_points = $spawn_points
 @onready var navigation_region_3d = $NavigationRegion3D
 
+var enemy_instances = []
+
 var monster = load("res://monster.tscn")
 var monster_instance
+
+var domain_activated = false
+
+var SCORE = 0
+@onready var SCORE_BOX : Label = $points/Control/MarginContainer/HBoxContainer/VBoxContainer/Panel/Label
 
 func _ready():
 	# Connect to the tree_entered signal of each node in the scene
 	$Player.connect("domain_instance_ready", _on_domain_instance_ready)
 	$Player.connect("domain_instance_finished", _on_domain_finished)
+	$person.connect("game_over", _game_over)
+
+	
+	SCORE_BOX.text = 'SCORE: ' + str(SCORE)
 	
 	randomize()
 	
@@ -58,6 +65,7 @@ func _ready():
 
 func _on_domain_instance_ready():
 	print("Received signal: Domain instance is ready")
+	domain_activated = true
 	world_environment.environment.background_mode = Environment.BG_SKY
 #	world_environment.environment.background_color = Color(1, 0, 0)
 	
@@ -74,6 +82,7 @@ func _on_domain_instance_ready():
 
 func _on_domain_finished():
 	print("Received signal: Domain instance is finished")
+	domain_activated = false
 	city_asset.visible = true
 	world_environment.environment.background_mode = Environment.BG_SKY 
 	world_environment.environment.sky.sky_material = PhysicalSkyMaterial.new()
@@ -88,10 +97,21 @@ func _get_random_child(parent_node):
 	return parent_node.get_child(random_id)
 
 func _on_spawn_timer_timeout():
-	var spawn_point = _get_random_child(spawn_points).global_position
-	monster_instance = monster.instantiate()
-	monster_instance.player_path = "../../person"
-	monster_instance.position = spawn_point
-	navigation_region_3d.add_child(monster_instance)
-#	# Add the spawned monster to the array
-#	enemy_instances.append(monster_instance)
+	if domain_activated == false:
+		var spawn_point = _get_random_child(spawn_points).global_position
+		monster_instance = monster.instantiate()
+		monster_instance.person_path = "../../person"
+		monster_instance.player_path = "../../Player"
+		monster_instance.position = spawn_point
+		monster_instance.connect("update_score_signal", _update_score)
+		navigation_region_3d.add_child(monster_instance)
+	#	# Add the spawned monster to the array
+		enemy_instances.append(monster_instance)
+
+func _update_score():
+	print(SCORE)
+	SCORE += 15
+	SCORE_BOX.text = 'SCORE: ' + str(SCORE)
+
+func _game_over():
+	get_tree().change_scene_to_file("res://game_over.tscn")

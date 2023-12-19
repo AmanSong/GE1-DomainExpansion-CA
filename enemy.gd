@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 var player = null
+var person_ = null
 
 @export var SPEED = 5
 @export var ATTACK_RANGE = 2.5
@@ -15,7 +16,9 @@ var hit_duration = 1.0
 @onready var destroyed_red = $destroyed_red
 @onready var animation_tree = $AnimationTree
 @onready var person = $"../../person"
+
 @export var player_path : NodePath
+@export var person_path : NodePath
 
 @onready var nav_agent : NavigationAgent3D = $NavigationAgent3D
 @onready var enemy = $"."  # Make sure this is the correct path to the enemy node
@@ -24,6 +27,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player = get_node(player_path)
+	person_ = get_node(person_path)
 	print(player_path)
 	
 	
@@ -34,11 +38,11 @@ func _process(delta):
 		
 	if not is_hit:
 		# Calculate normal navigation movement
-		nav_agent.set_target_position(player.global_transform.origin)
+		nav_agent.set_target_position(person_.global_transform.origin)
 		var next_nav_point = nav_agent.get_next_path_position()
 		velocity = (next_nav_point - global_transform.origin).normalized() * SPEED
 		
-		look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z), Vector3.UP)
+		look_at(Vector3(person_.global_position.x, global_position.y, person_.global_position.z), Vector3.UP)
 		
 		animation_tree.set("parameters/conditions/attack", _target_in_range())
 		animation_tree.set("parameters/conditions/run", !_target_in_range())
@@ -49,6 +53,7 @@ func _process(delta):
 		hit_timer += delta
 		if hit_timer >= hit_duration:
 			is_hit = false
+			SPEED = 5
 			hit_timer = 0.0
 			
 
@@ -76,30 +81,29 @@ func red_hit():
 		destroyed_red.emitting = true
 		await get_tree().create_timer(0.5).timeout
 		health -= 25
+		update_score()
 		
 func blue_hit():
 	if not is_hit:
 		is_hit = true
 		hit_duration = 3
 
-		# Stop the navigation agent by setting the target_position to the current position
-		nav_agent.set_target_position(global_transform.origin)
 		destroyed_blue.emitting = true
 		await get_tree().create_timer(2.0).timeout
 		health -= 25
+		update_score()
 		
 		
 func purple_hit():
+	update_score()
 	queue_free()
 
 func domain_hit():
 	if not is_hit:
-			is_hit = true
+		is_hit = true
+		SPEED = 0
+		print('within domain')
 
-			# Stop the navigation agent by setting the target_position to the current position
-			nav_agent.set_target_position(global_transform.origin)
-			
-			enemy.global_transform.origin += enemy.global_transform.basis.y * 160
 
 signal damage_taken
 func _target_in_range():
@@ -109,3 +113,7 @@ func _hit_finished():
 	print('Monster attacked!')
 	emit_signal("damage_taken", DAMAGE)
 
+signal update_score_signal
+func update_score():
+	print('monster has been destroyed')
+	emit_signal("update_score_signal")

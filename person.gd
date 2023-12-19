@@ -17,6 +17,9 @@ func _on_damage_taken(DAMAGE):
 	HEALTH -= DAMAGE
 	HEALTH_BAR.value = HEALTH
 	print("Person's health:", HEALTH)
+	
+	if HEALTH <= 0:
+		person_died()
 
 # Function to connect to the damage_taken signal of existing monsters
 func connect_to_existing_monsters():
@@ -29,7 +32,8 @@ func connect_to_existing_monsters():
 		if monster_instance.has_signal("damage_taken") and !monster_instance.is_connected("damage_taken", _on_damage_taken):
 			monster_instance.connect("damage_taken", _on_damage_taken)
 
-
-
+signal game_over
+func person_died():
+	emit_signal("game_over")
 
 
