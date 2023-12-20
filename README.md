@@ -8,7 +8,7 @@ Class Group: TU856
 
 Video:
 
-[![YouTube](https://youtu.be/9lgAwq9gw1s)
+(https://youtu.be/9lgAwq9gw1s)
 
 # Description of the project
 This project is a simple game involving you becoming Gojo Satoru from the anime 'Jujutsu Kaisen'
