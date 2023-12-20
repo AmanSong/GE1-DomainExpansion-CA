@@ -55,6 +55,9 @@ func _process(delta):
 	if Input.is_action_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		
+	if Input.is_action_pressed("fullscreen"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		
 	# Update cooldown timers
 	blue_cooldown_timer = max(0, blue_cooldown_timer - delta)
 	red_cooldown_timer = max(0, red_cooldown_timer - delta)

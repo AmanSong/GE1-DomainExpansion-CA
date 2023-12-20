@@ -44,7 +44,12 @@ func _process(delta):
 		
 		look_at(Vector3(person_.global_position.x, global_position.y, person_.global_position.z), Vector3.UP)
 		
-		animation_tree.set("parameters/conditions/attack", _target_in_range())
+		if _target_in_range():
+			animation_tree.set("parameters/conditions/attack", _target_in_range())
+			await get_tree().create_timer(5.0).timeout
+			animation_tree.set("parameters/conditions/attack", false)
+			await get_tree().create_timer(5.0).timeout
+		
 		animation_tree.set("parameters/conditions/run", !_target_in_range())
 		
 		move_and_slide()
